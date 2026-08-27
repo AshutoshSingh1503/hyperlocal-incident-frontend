@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Citizen Login - CitySafe</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <main class="login-container">
+
+        <div class="login-box">
+
+            <h1>🚨 CitySafe</h1>
+
+            <h2>Citizen Login</h2>
+
+            <p>Login to access your Citizen Dashboard</p>
+
+            <form id="citizenLoginForm">
+
+                <label for="email">
+                    Email or Mobile Number
+                </label>
+
+                <input
+                    type="text"
+                    id="email"
+                    placeholder="Enter your email or mobile number"
+                    required
+                >
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+                <button type="submit">
+                    Login
+                </button>
+
+            </form>
+
+            <p class="login-note">
+                New Citizen? Registration will be available soon.
+            </p>
+
+            <a href="home.html" class="back-home">
+                ← Back to Home
+            </a>
+
+        </div>
+
+    </main>
+
+    <script>
+        document
+            .getElementById("citizenLoginForm")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+                window.location.href = "index.html";
+
+            });
+    </script>
+
+</body>
+
+</html>
