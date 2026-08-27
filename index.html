@@ -2,169 +2,48 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>CitySafe - Report Incident</title>
+    <title>CitySafe</title>
 
     <link rel="stylesheet" href="style.css">
-    <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
+
 </head>
 
 <body>
 
-    <header>
+    <main class="home-container">
 
-        <div class="logo">
-            🚨 CitySafe
-        </div>
+        <div class="home-content">
 
-        <nav>
-            <nav>
-    <a href="#" class="active">Citizen Report</a>
+            <h1>🚨 CitySafe</h1>
 
-    <a href="officer.html">
-        Officer Dashboard
-    </a>
-</nav>
-            
-        </nav>
-
-    </header>
-
-
-    <main>
-
-        <div class="form-container">
-
-            <h1>Report a Local Incident</h1>
-
-            <p class="subtitle">
-                Help your community stay safe by reporting incidents near you.
+            <p>
+                Are you a Citizen or an Officer?
             </p>
 
+            <div class="role-container">
 
-            <form id="incidentForm">
+                <!-- Citizen -->
+                <a href="login-citizen.html" class="role-card">
+                    <span>👤</span>
+                    <strong>I am a Citizen</strong>
+                </a>
 
-                <label for="incidentType">
-                    Incident Type
-                </label>
+                <!-- Officer -->
+                <a href="login-officer.html" class="role-card">
+                    <span>👮</span>
+                    <strong>I am an Officer</strong>
+                </a>
 
-                <select id="incidentType" required>
-
-                    <option value="">
-                        Select incident type
-                    </option>
-
-                    <option>
-                        Waterlogging
-                    </option>
-
-                    <option>
-                        Fallen Tree
-                    </option>
-
-                    <option>
-                        Road Blockage
-                    </option>
-
-                    <option>
-                        Pipe Burst
-                    </option>
-
-                    <option>
-                        Fire
-                    </option>
-
-                    <option>
-                        Dangerous Pothole
-                    </option>
-
-                    <option>
-                        Other
-                    </option>
-
-                </select>
-
-
-                <label for="description">
-                    Description
-                </label>
-
-                <textarea
-                    id="description"
-                    placeholder="Describe what happened..."
-                    required
-                ></textarea>
-
-
-                <label for="photo">
-                    Upload Photo
-                </label>
-
-                <div class="upload-box">
-
-                    <input
-                        type="file"
-                        id="photo"
-                        accept="image/*""
-                        >
-                    
-                    <img
-                        id="photoPreview"
-                        src=""
-                        alt="Photo preview"
-                        style="display: none;"
-                    >    
-                
-                        
-
-                </div>
-
-
-                <label>
-                    Your Location
-                </label>
-
-                <div class="location-box">
-
-                    <span>📍</span>
-
-                    <span id="locationText">
-                        Location not detected
-                    </span>
-
-                    <button
-                        type="button"
-                        id="locationBtn"
-                    >
-                        Detect Location
-                    </button>
-
-                </div>
-                <div id="map"></div>
-
-
-                <button
-                    type="button"
-                    id="submitBtn"
-                    class="submit-btn"
-                >
-                    Submit Report
-                </button>
-
-            </form>
-
-            <div id="message"></div>
+            </div>
 
         </div>
 
     </main>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js"></script>
 
 </body>
 
