@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CitySafe - Report Incident</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+</head>
+
+<body>
+
+    <header>
+
+        <div class="logo">
+            🚨 CitySafe
+        </div>
+
+        <nav>
+            <a href="#">Home</a>
+            <a href="#" class="active">Report Incident</a>
+        </nav>
+
+    </header>
+
+
+    <main>
+
+        <div class="form-container">
+
+            <h1>Report a Local Incident</h1>
+
+            <p class="subtitle">
+                Help your community stay safe by reporting incidents near you.
+            </p>
+
+
+            <form id="incidentForm">
+
+                <label for="incidentType">
+                    Incident Type
+                </label>
+
+                <select id="incidentType" required>
+
+                    <option value="">
+                        Select incident type
+                    </option>
+
+                    <option>
+                        Waterlogging
+                    </option>
+
+                    <option>
+                        Fallen Tree
+                    </option>
+
+                    <option>
+                        Road Blockage
+                    </option>
+
+                    <option>
+                        Pipe Burst
+                    </option>
+
+                    <option>
+                        Fire
+                    </option>
+
+                    <option>
+                        Dangerous Pothole
+                    </option>
+
+                    <option>
+                        Other
+                    </option>
+
+                </select>
+
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    placeholder="Describe what happened..."
+                    required
+                ></textarea>
+
+
+                <label for="photo">
+                    Upload Photo
+                </label>
+
+                <div class="upload-box">
+
+                    <input
+                        type="file"
+                        id="photo"
+                        accept="image/*""
+                        >
+                    
+                    <img
+                        id="photoPreview"
+                        src=""
+                        alt="Photo preview"
+                        style="display: none;"
+                    >    
+                
+                        
+
+                </div>
+
+
+                <label>
+                    Your Location
+                </label>
+
+                <div class="location-box">
+
+                    <span>📍</span>
+
+                    <span id="locationText">
+                        Location not detected
+                    </span>
+
+                    <button
+                        type="button"
+                        id="locationBtn"
+                    >
+                        Detect Location
+                    </button>
+
+                </div>
+                <div id="map"></div>
+
+
+                <button
+                    type="button"
+                    id="submitBtn"
+                    class="submit-btn"
+                >
+                    Submit Report
+                </button>
+
+            </form>
+
+            <div id="message"></div>
+
+        </div>
+
+    </main>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

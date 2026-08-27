@@ -1,0 +1,192 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    color: #222;
+}
+
+/* Header */
+
+header {
+    background: white;
+    height: 65px;
+    padding: 0 8%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid #ddd;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+nav {
+    display: flex;
+    gap: 25px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #555;
+}
+
+nav a.active {
+    color: #d62828;
+    font-weight: bold;
+}
+
+/* Main */
+
+main {
+    min-height: calc(100vh - 65px);
+
+    display: flex;
+    justify-content: center;
+
+    padding: 50px 20px;
+}
+
+/* Form */
+
+.form-container {
+    width: 100%;
+    max-width: 600px;
+
+    background: white;
+
+    padding: 35px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Form fields */
+
+label {
+    display: block;
+
+    margin-top: 20px;
+    margin-bottom: 8px;
+
+    font-weight: bold;
+}
+
+select,
+textarea {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 7px;
+
+    font-size: 15px;
+}
+
+textarea {
+    height: 110px;
+    resize: vertical;
+}
+
+/* Upload */
+
+.upload-box {
+    border: 2px dashed #ccc;
+
+    padding: 20px;
+
+    border-radius: 7px;
+
+    text-align: center;
+}
+
+/* Location */
+
+.location-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px;
+
+    background: #f7f7f7;
+
+    border-radius: 7px;
+}
+
+#locationText {
+    flex: 1;
+    color: #666;
+}
+
+#locationBtn {
+    border: none;
+
+    background: white;
+
+    padding: 8px 10px;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+
+/* Submit */
+
+.submit-btn {
+    width: 100%;
+
+    margin-top: 30px;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #d62828;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+#photoPreview {
+    width: 100%;
+    max-width: 400px;
+    height: 250px;
+    object-fit: contain;
+    display: block;
+    margin: 15px auto;
+    border-radius: 10px;
+}
+#map {
+    height: 300px;
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 10px;
+}
