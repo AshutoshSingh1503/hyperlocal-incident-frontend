@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CitySafe - Officer Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Leaflet CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo">
+            🚨 CitySafe
+        </div>
+
+        <nav>
+
+            <a href="#" class="active">
+                Officer Dashboard
+            </a>
+
+            <a href="index.html">
+                Citizen Report
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main>
+
+        <div class="form-container">
+
+
+            <h1>
+                Officer Dashboard
+            </h1>
+
+            <p class="subtitle">
+                Monitor and manage local incident reports.
+            </p>
+
+
+            <!-- ================= DASHBOARD CARDS ================= -->
+
+            <div class="dashboard-card">
+
+                <h2>
+                    Total Reports
+                </h2>
+
+                <p id="totalCount">
+                    0
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <h2>
+                    Pending Reports
+                </h2>
+
+                <p id="pendingCount">
+                    0
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <h2>
+                    Verified Reports
+                </h2>
+
+                <p id="verifiedCount">
+                    0
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <h2>
+                    Resolved Reports
+                </h2>
+
+                <p id="resolvedCount">
+                    0
+                </p>
+
+            </div>
+
+
+            <!-- ================= RECENT REPORTS ================= -->
+
+            <h2 class="section-title">
+                Recent Reports
+            </h2>
+
+
+            <!-- Citizen report will appear here -->
+
+            <div id="recentReports">
+
+                <p>
+                    No reports available yet.
+                </p>
+
+            </div>
+
+
+            <!-- ================= REPORT DETAILS ================= -->
+
+            <div
+                id="reportDetails"
+                class="report-details"
+            >
+
+                <h2>
+                    Report Details
+                </h2>
+
+                <p>
+                    Click
+                    <strong>View Report</strong>
+                    to see incident details.
+                </p>
+
+            </div>
+
+
+            <!-- ================= MAP ================= -->
+
+            <div
+                id="affectedAreaSection"
+                style="display: none;"
+            >
+
+                <h2>
+                    📍 Citizen Reported Location
+                </h2>
+
+                <p>
+                    The marker shows the location
+                    reported by the citizen.
+                </p>
+
+
+                <div id="officerMap"></div>
+
+
+                <button
+                    id="verifyBtn"
+                    class="action-btn"
+                    onclick="markVerified()"
+                >
+                    Verify Report
+                </button>
+
+
+                <button
+                    id="resolveBtn"
+                    class="view-btn"
+                    onclick="markResolved()"
+                >
+                    Mark as Resolved
+                </button>
+
+
+                <p
+                    id="officerMessage"
+                    style="margin-top: 15px;"
+                ></p>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- ================= LEAFLET JS ================= -->
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    ></script>
+
+
+    <script>
+
+
+        // ==========================================
+        // REPORT STORAGE
+        // ==========================================
+
+        let reports = [];
+
+
+        let currentReport = null;
+
+
+        // ==========================================
+        // LOAD CITIZEN REPORT
+        // ==========================================
+        function loadCitizenReport() {
+
+    const savedReports =
+        localStorage.getItem("incidentReports");
+
+    if (!savedReports) {
+
+        reports = [];
+
+        return;
+    }
+
+    reports = JSON.parse(savedReports);
+}
+
+        
+
+
+        // ==========================================
+        // UPDATE DASHBOARD COUNTS
+        // ==========================================
+
+        function updateDashboardCounts() {
+
+            const total =
+                reports.length;
+
+
+            const pending =
+                reports.filter(
+                    report =>
+                        report.status === "Pending"
+                ).length;
+
+
+            const verified =
+                reports.filter(
+                    report =>
+                        report.status === "Verified"
+                ).length;
+
+
+            const resolved =
+                reports.filter(
+                    report =>
+                        report.status === "Resolved"
+                ).length;
+
+
+            document.getElementById(
+                "totalCount"
+            ).textContent = total;
+
+
+            document.getElementById(
+                "pendingCount"
+            ).textContent = pending;
+
+
+            document.getElementById(
+                "verifiedCount"
+            ).textContent = verified;
+
+
+            document.getElementById(
+                "resolvedCount"
+            ).textContent = resolved;
+
+        }
+
+
+        // ==========================================
+        // SHOW RECENT REPORTS
+        // ==========================================
+
+        function displayReports() {
+
+            const container =
+                document.getElementById(
+                    "recentReports"
+                );
+
+
+            if (reports.length === 0) {
+
+                container.innerHTML = `
+
+                    <p>
+                        No reports available yet.
+                    </p>
+
+                `;
+
+                return;
+
+            }
+
+
+            container.innerHTML = "";
+
+
+            reports.forEach(
+                function(report, index) {
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    card.className =
+                        "report-card";
+
+
+                    card.innerHTML = `
+
+                        <h3>
+                            🚨 ${report.incidentType}
+                        </h3>
+
+                        <p>
+                            <strong>Report ID:</strong>
+                            ${report.id}
+                        </p>
+
+                        <p>
+                            <strong>Status:</strong>
+                            ${report.status}
+                        </p>
+
+                        <p>
+                            <strong>Date:</strong>
+                            ${report.date}
+                        </p>
+
+                        <button
+                            class="view-btn"
+                            onclick="showReport(${index})"
+                        >
+                            View Report
+                        </button>
+
+                    `;
+
+
+                    container.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // SHOW REPORT DETAILS
+        // ==========================================
+
+        function showReport(index) {
+
+            currentReport =
+                index;
+
+
+            const report =
+                reports[index];
+
+
+            const details =
+                document.getElementById(
+                    "reportDetails"
+                );
+
+
+            details.innerHTML = `
+
+                <h2>
+                    🚨 ${report.incidentType}
+                </h2>
+
+                <p>
+                    <strong>Report ID:</strong>
+                    ${report.id}
+                </p>
+
+                <p>
+                    <strong>Description:</strong>
+                    ${report.description}
+                </p>
+
+                <p>
+                    <strong>Latitude:</strong>
+                    ${Number(report.latitude).toFixed(5)}
+                </p>
+
+                <p>
+                    <strong>Longitude:</strong>
+                    ${Number(report.longitude).toFixed(5)}
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
+                    ${report.date}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    ${report.status}
+                </p>
+
+                <button
+                    class="action-btn"
+                    onclick="openCitizenLocation()"
+                >
+                    📍 View Citizen Location
+                </button>
+
+            `;
+
+        }
+
+
+        // ==========================================
+        // OPEN CITIZEN LOCATION
+        // ==========================================
+
+        function openCitizenLocation() {
+
+            if (
+                currentReport === null
+            ) {
+
+                alert(
+                    "Please open a report first."
+                );
+
+                return;
+
+            }
+
+
+            const report =
+                reports[currentReport];
+
+
+            const section =
+                document.getElementById(
+                    "affectedAreaSection"
+                );
+
+
+            section.style.display =
+                "block";
+
+
+            const mapContainer =
+                document.getElementById(
+                    "officerMap"
+                );
+
+
+            mapContainer.innerHTML = "";
+
+
+            const latitude =
+                parseFloat(
+                    report.latitude
+                );
+
+
+            const longitude =
+                parseFloat(
+                    report.longitude
+                );
+
+
+            if (
+                isNaN(latitude) ||
+                isNaN(longitude)
+            ) {
+
+                alert(
+                    "Location data is not available."
+                );
+
+                return;
+
+            }
+
+
+            // Create map
+
+            const map =
+                L.map(
+                    "officerMap"
+                ).setView(
+                    [
+                        latitude,
+                        longitude
+                    ],
+                    16
+                );
+
+
+            // Add OpenStreetMap
+
+            L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    attribution:
+                        "&copy; OpenStreetMap contributors"
+                }
+            ).addTo(map);
+
+
+            // Add citizen marker
+
+            const marker =
+                L.marker(
+                    [
+                        latitude,
+                        longitude
+                    ]
+                ).addTo(map);
+
+
+            marker
+                .bindPopup(
+                    "📍 Citizen Reported Location"
+                )
+                .openPopup();
+
+
+            // Fix map size
+
+            setTimeout(
+                function() {
+
+                    map.invalidateSize();
+
+                },
+                200
+            );
+
+        }
+
+
+        // ==========================================
+        // VERIFY REPORT
+        // ==========================================
+
+        function markVerified() {
+
+            if (
+                currentReport === null
+            ) {
+
+                alert(
+                    "Please open a report first."
+                );
+
+                return;
+
+            }
+
+
+            const report =
+                reports[currentReport];
+
+
+            if (
+                report.status === "Resolved"
+            ) {
+
+                alert(
+                    "This report is already resolved."
+                );
+
+                return;
+
+            }
+
+
+            report.status =
+                "Verified";
+
+
+            saveReports();
+
+
+            displayReports();
+
+            updateDashboardCounts();
+
+
+            document.getElementById(
+                "officerMessage"
+            ).textContent =
+                "✅ Report verified successfully.";
+
+        }
+
+
+        // ==========================================
+        // RESOLVE REPORT
+        // ==========================================
+
+        function markResolved() {
+
+            if (
+                currentReport === null
+            ) {
+
+                alert(
+                    "Please open a report first."
+                );
+
+                return;
+
+            }
+
+
+            const report =
+                reports[currentReport];
+
+
+            report.status =
+                "Resolved";
+
+
+            saveReports();
+
+
+            displayReports();
+
+            updateDashboardCounts();
+
+
+            document.getElementById(
+                "officerMessage"
+            ).textContent =
+                "✅ Report marked as resolved.";
+
+        }
+
+
+        // ==========================================
+        // SAVE REPORT STATUS
+        // ==========================================
+
+        function saveReports() {
+
+            if (
+                reports.length === 0
+            ) {
+
+                return;
+
+            }
+
+
+            localStorage.setItem(
+                "latestIncidentReport",
+                JSON.stringify(
+                    reports[0]
+                )
+            );
+
+        }
+
+
+        // ==========================================
+        // INITIALIZE DASHBOARD
+        // ==========================================
+
+        loadCitizenReport();
+
+        updateDashboardCounts();
+
+        displayReports();
+
+
+    </script>
+
+
+</body>
+
+</html>
